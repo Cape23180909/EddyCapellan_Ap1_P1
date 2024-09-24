@@ -1,10 +1,17 @@
 using EddyCapellan_Ap1_P1.Components;
+using EddyCapellan_Ap1_P1.DAL;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+//Obtenemos el ConStr
+var ConStr = builder.Configuration.GetConnectionString("ConStr");
+// Agregamos el contexto al builder con el ConStr
+builder.Services.AddDbContext<Contexto>(Options => Options.UseSqlite(ConStr));
 
 var app = builder.Build();
 
