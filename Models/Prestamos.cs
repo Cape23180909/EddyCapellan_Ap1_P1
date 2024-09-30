@@ -5,7 +5,7 @@ namespace EddyCapellan_Ap1_P1.Models;
 public class Prestamos
 {
     [Key]
-    public int DeudorId { get; set; }
+    public int PrestamoId { get; set; }
     [Required(ErrorMessage = "Favor colocar el nombre del deudor.")]
     public string? Deudor { get; set; }
     [Required(ErrorMessage = "Favor colocar el concepto")]
