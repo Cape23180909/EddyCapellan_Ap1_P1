@@ -1,28 +1,57 @@
-﻿@page "/Registro/Index"
+﻿@page "/Prestamo/Index"
 @rendermode InteractiveServer
+@inject PrestamoService prestamoService
 @inject NavigationManager navigationManager
 
 
-<PageTitle></PageTitle>
+<PageTitle>Consulta Prestamos</PageTitle>
 <div class="container">
     <div class="card shadow-lg">
-        <div class="card-header">
-            <h5 class="card-header">Registro</h5>
+        <div class="card-header text-center">
+            <h5 class="card-header">Consulta de prestamos</h5>
         </div>
 
         <div class="card-body">
             <div class="col-md-15 text-end">
-                <a href="/Prioridad/Create" class="btn btn-success" type="button">
+                <a href="/Prioridad/Create" class="btn btn-primary" type="button">
 
-                    <span class="bi bi-plus-square-fill mt-3"></span> Crear
+                    <span class="bi bi-plus-square mt-3"></span> Crear
                 </a>
 
                 <table class="table table-light table-bordered">
-                    <thead class="table table-striped text-center text-white">
+                    <thead class="table table-striped text-center ">
                         <tr>
+                            <th>PrestamoId</th>
+                            <th>Deudor</th>
+                            <th>Concepto</th>
+                            <th>Monto</th>
+                            <th>Ver</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach(var pretamo in listaprestamo)
+                        {
+                            <tr>
+                                <td class="text-center">@prestamo.PrestamoId</td>
+                                <td class="text-center">@prestamo.Deudor</td>
+                                <td class="text-center">@prestamo.Concepto</td>
+                                <td class="text-center">@prestamo.Monto</td>
+
+                                <td class="text-center">
+                                    <a href="" class="btn bi bi-eye"></a>
+                                </td>
+
+                                <td class="text-center">
+                                    <a href="" class="btn bi bi-pencil-square"></a>
+                                </td>
+
+                                <td class="text-center">
+                                    <a href="" class="btn bi bi-trash"></a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -30,7 +59,17 @@
 
     </div>
 </div>
+<div class="card-footer">
+    <p>Total de prestamos: @listaprestamo.Count</p>
+</div>
 
 @code {
+    public Prestamos prestamo = new Prestamos();
+    public List<Prestamos> listaprestamo = new List<Prestamos>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaprestamo = await prestamoService.Listar(p => true);
+    }
 
 }
