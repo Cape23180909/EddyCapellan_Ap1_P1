@@ -3,7 +3,6 @@
 @inject PrestamoService prestamoService
 @inject NavigationManager navigationManager
 
-
 <PageTitle>Consulta Prestamos</PageTitle>
 <div class="container">
     <div class="card shadow-lg">
@@ -13,7 +12,7 @@
 
         <div class="card-body">
             <div class="col-md-15 text-end">
-                <a href="/Prioridad/Create" class="btn btn-primary" type="button">
+                <a href="/Prestamo/Create" class="btn btn-primary" type="button">
 
                     <span class="bi bi-plus-square mt-3"></span> Crear
                 </a>
@@ -31,7 +30,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var pretamo in listaprestamo)
+                        @foreach (var prestamo in listaprestamo)
                         {
                             <tr>
                                 <td class="text-center">@prestamo.PrestamoId</td>
@@ -40,15 +39,15 @@
                                 <td class="text-center">@prestamo.Monto</td>
 
                                 <td class="text-center">
-                                    <a href="" class="btn bi bi-eye"></a>
+                                    <a href="/Prestamo/Details/@prestamo.PrestamoId" class="btn bi bi-eye"></a>
                                 </td>
 
                                 <td class="text-center">
-                                    <a href="" class="btn bi bi-pencil-square"></a>
+                                    <a href="/Prestamo/Edit/@prestamo.PrestamoId" class="btn bi bi-pencil-square"></a>
                                 </td>
 
                                 <td class="text-center">
-                                    <a href="" class="btn bi bi-trash"></a>
+                                    <a href="/Prestamo/Delete/@prestamo.PrestamoId" class="btn bi bi-trash"></a>
                                 </td>
                             </tr>
                         }
