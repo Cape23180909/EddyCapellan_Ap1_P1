@@ -11,16 +11,18 @@ namespace EddyCapellan_Ap1_P1.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Registros",
+                name: "Prestamos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    PrestamoId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Nombre = table.Column<string>(type: "TEXT", nullable: false)
+                    Deudor = table.Column<string>(type: "TEXT", nullable: false),
+                    Concepto = table.Column<string>(type: "TEXT", nullable: false),
+                    Monto = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Registros", x => x.Id);
+                    table.PrimaryKey("PK_Prestamos", x => x.PrestamoId);
                 });
         }
 
@@ -28,7 +30,7 @@ namespace EddyCapellan_Ap1_P1.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Registros");
+                name: "Prestamos");
         }
     }
 }
