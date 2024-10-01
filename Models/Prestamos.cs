@@ -8,9 +8,9 @@ public class Prestamos
     public int PrestamoId { get; set; }
     [Required(ErrorMessage = "Favor colocar el nombre del deudor.")]
     public string? Deudor { get; set; }
-    [Required(ErrorMessage = "Favor colocar el concepto")]
+    [Required(ErrorMessage = "Favor colocar el concepto.")]
     public string? Concepto { get; set; }
-    [Required(ErrorMessage = "Favor colocar el concepto")]
+    [Required(ErrorMessage = "Favor colocar el monto.")]
     public decimal? Monto { get; set; }
 
 }
