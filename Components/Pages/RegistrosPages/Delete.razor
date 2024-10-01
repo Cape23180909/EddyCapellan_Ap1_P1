@@ -1,0 +1,78 @@
+﻿@page "/Prestamo/Delete/{PrestamoId:int}"
+@rendermode InteractiveServer
+@inject PrestamoService prestamoService
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="card-header text-center">
+            <h5 class="card-header">Eliminar prestamo</h5>
+        </div>
+        <div class="card-header text-center">
+            <h5 class="card-header">¿Est&aacute;s seguro de que quieres eliminar este prestamo?</h5>
+        </div>
+        <div class="container">
+            <div class="card-header">
+                <div class="col md-6">
+                    <div class="card-body">
+                        <div class="card-header text-center">
+                            <h5 class="card-header">Datos del prestamo:</h5>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="text-center">PrestamoId:<strong>@prestamo.PrestamoId</strong></li>
+                            <li class="text-center">Deudor:<strong>@prestamo.Deudor</strong></li>
+                            <li class="text-center">Concepto:<strong>@prestamo.Concepto</strong></li>
+                            <li class="text-center">Monto:<strong>@prestamo.Monto</strong></li>
+                        </ul>
+
+                    </div>
+                    <div class="card-body text-center">
+                        <a @onclick="EliminarPrestamo" class="btn btn-primary"><span class="bi bi-trash"></span>Eliminar</a>
+                        <a href="/Prestamo/Index" class="btn btn-primary"><span class="bi bi-arrow-left mt-3"></span>Volver</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    @if (Validacion)
+    {
+        <div class="alert alert-danger text-center" role="alert">
+            El Prestamo se a Eliminado con exito.
+            Dele al boton volver para retornar a la consulta.
+        </div>
+    }
+
+</div>
+
+
+@code {
+    [Parameter]
+    public int PrestamoId { get; set; }
+    public Prestamos? prestamo { get; set; } = new Prestamos();
+    private bool Validacion;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (prestamo != null)
+        {
+            prestamo = await prestamoService.Buscar(PrestamoId);
+        }
+    }
+
+    public async Task EliminarPrestamo()
+    {
+        if (PrestamoId == 0 || prestamo == null)
+        {
+            return;
+        }
+        if (await prestamoService.Eliminar(PrestamoId))
+        {
+            Validacion = true;
+        }
+    }
+
+
+}
