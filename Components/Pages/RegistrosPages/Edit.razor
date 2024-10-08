@@ -1,4 +1,6 @@
 ﻿@page "/Prestamo/Edit/{PrestamoId:int}"
+@using EddyCapellan_Ap1_P1.DAL
+@using Microsoft.EntityFrameworkCore
 @rendermode InteractiveServer
 @inject PrestamoService prestamoService
 @inject NavigationManager navigationManager
@@ -13,7 +15,6 @@
     </div>
 
     <div class="card-body">
-
         @*PrestamoId*@
         <div class="mb-3">
             <label for="prestamId" class="form-label">PrestamoId:</label>
@@ -22,9 +23,15 @@
 
         @*Deudor*@
         <div class="mb-3">
-            <label for="Deudor" class="form-label">Deudor:</label>
-            <InputText @bind-Value="prestamo.Deudor" class="form-control" />
-            <ValidationMessage For="@(() => prestamo.Deudor)" />
+            <label>Deudor:</label>
+            <select @bind="prestamo.DeudorId" class="form-control">
+                <option value="0">Seleccione un deudor</option>
+                @foreach (var deudor in deudores)
+                {
+                    <option value="@deudor.DeudorId">@deudor.Nombres</option>
+                }
+            </select>
+            <ValidationMessage For="@(() => prestamo.DeudorId)" />
         </div>
 
         @*Concepto*@
@@ -36,15 +43,24 @@
 
         @*Monto*@
         <div class="mb-3">
-            <label for="Concepto" class="form-label">Monto:</label>
+            <label for="Monto" class="form-label">Monto:</label>
             <InputNumber @bind-Value="prestamo.Monto" class="form-control" />
             <ValidationMessage For="@(() => prestamo.Monto)" />
+        </div>
+
+        @*Balance*@
+        <div class="mb-3">
+            <label for="Balance" class="form-label">Balance:</label>
+            <InputNumber @bind-Value="prestamo.Balance" class="form-control" />
+            <ValidationMessage For="@(() => prestamo.Balance)" />
         </div>
     </div>
 
     <div class="card-footer text-center">
         <div class="btn-group">
-            <button type="submit" class="btn btn-primary"<span class="bi bi-floppy mt-3"></span>Guardar</button>
+            <button type="submit" class="btn btn-primary">
+                <span class="bi bi-floppy mt-3"></span>Guardar
+            </button>
             <a href="/Prestamo/Index" class="btn btn-primary" type="button">
                 <span class="bi bi-arrow-left mt-3"></span> Volver
             </a>
@@ -54,36 +70,35 @@
     @if (Validacion)
     {
         <div class="alert alert-success text-center" role="alert">
-            El Prestamo se a modificado con exito.
-            Dele al boton volver para retornar a la consulta.
+            El Prestamo se ha modificado con éxito.
+            Dele al botón volver para retornar a la consulta.
         </div>
     }
-
-
-
-
 </EditForm>
 
 @code {
     [Parameter]
     public int PrestamoId { get; set; }
     public Prestamos? prestamo { get; set; } = new Prestamos();
+    public List<Deudores> deudores { get; set; } = new List<Deudores>();
     private bool Validacion;
     private bool existe = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        deudores = await prestamoService.ListarDeudores();
+        prestamo = await prestamoService.Buscar(PrestamoId);
+    }
 
     public async Task Nuevo()
     {
         prestamo = new Prestamos();
         existe = false;
     }
-    protected override async Task OnInitializedAsync()
-    {
-        prestamo = await prestamoService.Buscar(PrestamoId);
-    }
 
     public async Task<bool> Validar()
     {
-        var listaprestamo = await prestamoService.Listar(p => p.Deudor.ToLower() == prestamo.Deudor.ToLower() && prestamo.PrestamoId != PrestamoId);
+        var listaprestamo = await prestamoService.Listar(p => p.Concepto.ToLower() == prestamo.Concepto.ToLower() && prestamo.PrestamoId != PrestamoId);
         return listaprestamo.Count == 0;
     }
 
@@ -97,7 +112,7 @@
         }
         else
         {
-            Nuevo();
+            await Nuevo();
         }
     }
 
@@ -113,5 +128,4 @@
             Validacion = true;
         }
     }
-
 }
