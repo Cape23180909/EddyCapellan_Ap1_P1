@@ -53,6 +53,7 @@ public class PrestamoService
     {
         return await _contexto.Prestamos
             .AsNoTracking()
+            .Include(p => p.Deudor)
             .FirstOrDefaultAsync(p => p.PrestamoId == id);
     }
     //Metodo Listar 
