@@ -24,6 +24,7 @@
                             <th>Deudor</th>
                             <th>Concepto</th>
                             <th>Monto</th>
+                            <th>Balance</th>
                             <th>Ver</th>
                             <th>Editar</th>
                             <th>Eliminar</th>
@@ -34,9 +35,10 @@
                         {
                             <tr>
                                 <td class="text-center">@prestamo.PrestamoId</td>
-                                <td class="text-center">@prestamo.Deudor</td>
+                                <td class="text-center">@prestamo.Deudor?.Nombres</td>
                                 <td class="text-center">@prestamo.Concepto</td>
                                 <td class="text-center">@prestamo.Monto</td>
+                                <td class="text-center">@prestamo.Balance</td>
 
                                 <td class="text-center">
                                     <a href="/Prestamo/Details/@prestamo.PrestamoId" class="btn bi bi-eye"></a>
