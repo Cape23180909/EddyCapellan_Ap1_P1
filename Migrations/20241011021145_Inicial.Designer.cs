@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EddyCapellan_Ap1_P1.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20241008040436_Inicial")]
+    [Migration("20241011021145_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -19,6 +19,52 @@ namespace EddyCapellan_Ap1_P1.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
+
+            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.CobroDetalle", b =>
+                {
+                    b.Property<int>("DetalleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CobroId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PrestamoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("ValorCobrado")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("DetalleId");
+
+                    b.HasIndex("CobroId");
+
+                    b.HasIndex("PrestamoId");
+
+                    b.ToTable("CobroDetalle");
+                });
+
+            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Cobros", b =>
+                {
+                    b.Property<int>("CobroId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DeudorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Monto")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CobroId");
+
+                    b.HasIndex("DeudorId");
+
+                    b.ToTable("Cobros");
+                });
 
             modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Deudores", b =>
                 {
@@ -49,6 +95,11 @@ namespace EddyCapellan_Ap1_P1.Migrations
                         {
                             DeudorId = 2,
                             Nombres = "Maria"
+                        },
+                        new
+                        {
+                            DeudorId = 3,
+                            Nombres = "Juan"
                         });
                 });
 
@@ -80,6 +131,36 @@ namespace EddyCapellan_Ap1_P1.Migrations
                     b.ToTable("Prestamos");
                 });
 
+            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.CobroDetalle", b =>
+                {
+                    b.HasOne("EddyCapellan_Ap1_P1.Models.Cobros", "Cobro")
+                        .WithMany("CobroDetalles")
+                        .HasForeignKey("CobroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EddyCapellan_Ap1_P1.Models.Prestamos", "Prestamo")
+                        .WithMany()
+                        .HasForeignKey("PrestamoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cobro");
+
+                    b.Navigation("Prestamo");
+                });
+
+            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Cobros", b =>
+                {
+                    b.HasOne("EddyCapellan_Ap1_P1.Models.Deudores", "Deudor")
+                        .WithMany()
+                        .HasForeignKey("DeudorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deudor");
+                });
+
             modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Deudores", b =>
                 {
                     b.HasOne("EddyCapellan_Ap1_P1.Models.Prestamos", null)
@@ -96,6 +177,11 @@ namespace EddyCapellan_Ap1_P1.Migrations
                         .IsRequired();
 
                     b.Navigation("Deudor");
+                });
+
+            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Cobros", b =>
+                {
+                    b.Navigation("CobroDetalles");
                 });
 
             modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Prestamos", b =>
