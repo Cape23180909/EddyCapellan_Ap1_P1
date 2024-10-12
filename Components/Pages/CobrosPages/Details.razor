@@ -1,0 +1,127 @@
+﻿@page "/Cobro/Details/{CobroId:int}"
+@inject CobroService cobroService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@if (cobro != null)
+{
+    <PageTitle>Detalles del cobro</PageTitle>
+
+    <div class="container mt-4">
+        <div class="card shadow-lg">
+            <div class="card-header text-center">
+                <h3 class="mb-0 fw-bold">Detalles del Cobro</h3>
+            </div>
+
+            <div class="card-body">
+                <div class="mb-3 row">
+                    <div class="col-sm-6">
+                        <label for="CobroId" class="col-form-label">Cobro Id:</label>
+                        <p class="form-control-plaintext">@cobro?.CobroId</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="Fecha" class="col-form-label">Fecha:</label>
+                        <p class="form-control-plaintext"> @(cobro?.Fecha.HasValue == true ? cobro.Fecha.Value.ToString("dd/MM/yy") : "")</p>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-6">
+                        <label for="Deudor" class="col-form-label">Deudor:</label>
+                        <p class="form-control-plaintext">
+                            @listadeudor?.FirstOrDefault(d => d.DeudorId == cobro?.DeudorId)?.Nombres
+                        </p>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="Monto" class="col-form-label">Monto:</label>
+                        <p class="form-control-plaintext">@cobro?.Monto</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-lg mt-4">
+            <div class="card-header text-center">
+                <h3 class="mb-0 fw-bold">Detalles del Cobro</h3>
+            </div>
+
+            <div class="card-body">
+                <div class="mb-3 row">
+                    <label for="DetalleId" class="col-sm-2 col-form-label">Detalle Id:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-plaintext">@cobrodetalle?.DetalleId</p>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="CobroId" class="col-sm-2 col-form-label">Cobro Id:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-plaintext">@cobro?.CobroId</p>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="PrestamoId" class="col-sm-2 col-form-label">Prestamo Id:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-plaintext">@prestamo?.PrestamoId</p>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="ValorCobrado" class="col-sm-2 col-form-label">Valor Cobrado:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-plaintext">@cobrodetalle?.ValorCobrado</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>DetalleId</th>
+                                <th>CobroId</th>
+                                <th>PrestamoId</th>
+                                <th>ValorCobrado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var cobrodetalle in listacobrodetalle)
+                            {
+                                <tr>
+                                    <td>@cobrodetalle.DetalleId</td>
+                                    <td>@cobrodetalle.CobroId</td>
+                                    <td>@cobrodetalle.PrestamoId</td>
+                                    <td>@cobrodetalle.ValorCobrado</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <a href="/Cobro/Index" class="btn btn-primary">
+                    <span class="bi bi-arrow-left mt-3"></span> Volver
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int CobroId { get; set; }
+    public Cobros? cobro { get; set; } = new Cobros();
+    public CobroDetalle? cobrodetalle { get; set; } = new CobroDetalle();
+    public List<CobroDetalle> listacobrodetalle { get; set; } = new List<CobroDetalle>();
+    public List<Deudores> listadeudor { get; set; } = new List<Deudores>();
+    public Prestamos? prestamo { get; set; } = new Prestamos();
+
+    protected override async Task OnInitializedAsync()
+    {
+        cobro = await cobroService.Buscar(CobroId);
+        listadeudor = await cobroService.ListarDeudores();
+
+        listacobrodetalle = cobro.CobroDetalles.ToList();
+    }
+}
