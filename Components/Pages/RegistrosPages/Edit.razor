@@ -11,14 +11,14 @@
     <DataAnnotationsValidator />
 
     <div class="card-header text-center">
-        <h5 class="card-header">Editar prestamo</h5>
+        <h3 class="card-header fw-bold">Editar prestamo</h3>
     </div>
 
     <div class="card-body">
         @*PrestamoId*@
         <div class="mb-3">
             <label for="prestamId" class="form-label">PrestamoId:</label>
-            <InputNumber @bind-Value="prestamo.PrestamoId" />
+            <InputNumber @bind-Value="prestamo.PrestamoId" readonly />
         </div>
 
         @*Deudor*@
