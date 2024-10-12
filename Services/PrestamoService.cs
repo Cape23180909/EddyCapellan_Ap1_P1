@@ -65,12 +65,11 @@ public class PrestamoService
             .Where(criterio)
             .ToListAsync();
     }
-
+    //Metodo ListaDeudores que me dice todos los deudores que tengo en modelcreate
     public async Task<List<Deudores>> ListarDeudores()
     {
         return await _contexto.Deudores
             .AsNoTracking()
             .ToListAsync();
     }
-
 }
