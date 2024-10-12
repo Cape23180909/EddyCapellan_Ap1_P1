@@ -3,7 +3,6 @@
 @inject PrestamoService prestamoService
 @inject NavigationManager navigationManager
 
-
 <PageTitle>Detalles Prestamo</PageTitle>
 
 @if (prestamo != null)
@@ -11,7 +10,7 @@
     <div class="container">
         <div class="row mb-3">
             <div class="card-header text-center">
-                <h5 class="card-header">Detalles del prestamo</h5>
+                <h3 class="card-header fw-bold">Detalles del prestamo</h3>
             </div>
             <div class="container">
                 <div class="card-header">
@@ -22,13 +21,14 @@
                                 <li>Deudor:<strong>@prestamo.Deudor?.Nombres</strong></li>
                                 <li>Concepto:<strong>@prestamo.Concepto</strong></li>
                                 <li>Monto:<strong>@prestamo.Monto</strong></li>
+                                <li>Balance:<strong>@prestamo.Balance</strong></li>
 
                             </ul>
 
                         </div>
-                       <div>
+                        <div>
                             <a href="/Prestamo/Index" class="btn btn-primary"><span class="bi bi-arrow-left mt-3"></span>Volver</a>
-                       </div>
+                        </div>
                     </div>
 
                 </div>
@@ -39,7 +39,6 @@
 
     </div>
 }
-
 
 @code {
     [Parameter]
