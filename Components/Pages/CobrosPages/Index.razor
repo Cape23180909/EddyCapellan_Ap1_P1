@@ -1,0 +1,72 @@
+﻿@page "/Cobro/Index"
+@rendermode InteractiveServer
+@inject CobroService cobroService
+@inject NavigationManager navigationManager
+
+<PageTitle>Consulta Cobros</PageTitle>
+
+<div class="container">
+    <div class="card shadow-lg">
+        <div class="card-header text-center">
+            <h3 class="card-header fw-bold">Consulta de cobros</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="col-md-15 text-end">
+                <a href="/Cobro/Create" class="btn btn-primary" type="button">
+                    <span class="bi bi-plus-square mt-3"></span> Crear
+                </a>
+
+                <table class="table table-light table-bordered">
+                    <thead class="table table-striped text-center ">
+                        <tr>
+                            <th>CobroId</th>
+                            <th>Fecha</th>
+                            <th>Deudor</th>
+                            <th>Monto</th>
+                            <th>Ver</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cobro in listacobro)
+                        {
+                            <tr>
+                                <td class="text-center">@cobro.CobroId</td>
+                                <td class="text-center">@(cobro?.Fecha.HasValue == true? cobro.Fecha.Value.ToString("dd/MM/yy") : "")</td>
+                                <td class="text-center">@cobro.Deudor.Nombres</td>
+                                <td class="text-center">@cobro.Monto</td>
+
+                                <td class="text-center">
+                                    <a href="/Cobro/Details/@cobro.CobroId" class="btn bi bi-eye"></a>
+                                </td>
+
+                                <td class="text-center">
+                                    <a href="/Cobro/Edit/@cobro.CobroId" class="btn bi bi-pencil-square"></a>
+                                </td>
+
+                                <td class="text-center">
+                                    <a href="/Cobro/Delete/@cobro.CobroId" class="btn bi bi-trash"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-footer">
+    <p>Total de prestamos: @listacobro.Count</p>
+</div>
+
+@code {
+    public Cobros cobro = new Cobros();
+    public List<Cobros> listacobro = new List<Cobros>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        listacobro = await cobroService.listar(p => true);
+    }
+}
