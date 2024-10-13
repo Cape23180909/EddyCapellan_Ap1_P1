@@ -19,5 +19,5 @@ public class Cobros
     [Range(0.01, double.MaxValue, ErrorMessage = "El monto debe ser mayor que cero.")]
     public decimal Monto { get; set; }
 
-    public ICollection<CobroDetalle> CobroDetalles { get; set; } = new List<CobroDetalle>();
+    public ICollection<CobrosDetalle> CobroDetalles { get; set; } = new List<CobrosDetalle>();
 }

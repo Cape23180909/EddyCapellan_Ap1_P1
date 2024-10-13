@@ -154,9 +154,9 @@
     [Parameter]
     public int CobroId { get; set; }
     public Cobros? cobro { get; set; } = new Cobros();
-    public CobroDetalle? cobrodetalle { get; set; } = new CobroDetalle();
+    public CobrosDetalle? cobrodetalle { get; set; } = new CobrosDetalle();
     private int selectedPrestamoId { get; set; }
-    public List<CobroDetalle> listacobrodetalle { get; set; } = new List<CobroDetalle>();
+    public List<CobrosDetalle> listacobrodetalle { get; set; } = new List<CobrosDetalle>();
     public List<Deudores> listadeudor { get; set; } = new List<Deudores>();
     public List<Prestamos> prestamosDisponibles { get; set; } = new List<Prestamos>();
     private bool guardo;
@@ -188,21 +188,21 @@
         }
     }
 
-    public async Task EliminarDetalle(CobroDetalle detalle)
+    public async Task EliminarDetalle(CobrosDetalle detalle)
     {
         listacobrodetalle.Remove(detalle);
     }
 
     public async Task AgregarDetalle()
     {
-        listacobrodetalle.Add(new CobroDetalle
+        listacobrodetalle.Add(new CobrosDetalle
             {
                 DetalleId = cobrodetalle.DetalleId,
                 CobroId = cobro.CobroId,
                 PrestamoId = selectedPrestamoId,
                 ValorCobrado = cobrodetalle.ValorCobrado
             });
-        cobrodetalle = new CobroDetalle();
+        cobrodetalle = new CobrosDetalle();
     }
 
     private async Task OnDeudorSelected(ChangeEventArgs e)

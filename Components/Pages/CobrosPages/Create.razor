@@ -156,12 +156,12 @@
     [Parameter]
     public int CobroId { get; set; }
     public Cobros? cobro { get; set; } = new Cobros();
-    public CobroDetalle? cobrodetalle { get; set; } = new CobroDetalle();
+    public CobrosDetalle? cobrodetalle { get; set; } = new CobrosDetalle();
     public Prestamos? prestamo { get; set; } = new Prestamos();
     private int selectedDeudorId { get; set; }
     private List<Prestamos> prestamosDisponibles = new List<Prestamos>();
     private int selectedPrestamoId { get; set; }
-    public List<CobroDetalle> listacobrodetalle { get; set; } = new List<CobroDetalle>();
+    public List<CobrosDetalle> listacobrodetalle { get; set; } = new List<CobrosDetalle>();
     public List<Deudores> listadeudor { get; set; } = new List<Deudores>();
     private bool existe = false;
     private bool guardo;
@@ -193,7 +193,7 @@
     public async Task Nuevo()
     {
         existe = false;
-        cobrodetalle = new CobroDetalle();
+        cobrodetalle = new CobrosDetalle();
         cobro = new Cobros();
     }
     public async Task Buscar()
@@ -228,21 +228,21 @@
         }
     }
 
-    public async Task EliminarDetalle(CobroDetalle detalle)
+    public async Task EliminarDetalle(CobrosDetalle detalle)
     {
         listacobrodetalle.Remove(detalle);
     }
 
     public async Task AgregarDetalle()
     {
-        listacobrodetalle.Add(new CobroDetalle
+        listacobrodetalle.Add(new CobrosDetalle
             {
                 DetalleId = cobrodetalle.DetalleId,
                 CobroId = cobro.CobroId,
                 PrestamoId = selectedPrestamoId, 
                 ValorCobrado = cobrodetalle.ValorCobrado
             });
-        cobrodetalle = new CobroDetalle();
+        cobrodetalle = new CobrosDetalle();
     }
 
     public async Task Volver()
