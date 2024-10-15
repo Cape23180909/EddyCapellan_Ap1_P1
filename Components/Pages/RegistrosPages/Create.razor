@@ -1,15 +1,18 @@
 ﻿@page "/Prestamo/Create"
+@using EddyCapellan_Ap1_P1.DAL
+@using Microsoft.EntityFrameworkCore
 @rendermode InteractiveServer
 @inject PrestamoService prestamoService
 @inject NavigationManager navigationManager
+@inject Contexto _contexto
 
 <PageTitle>Registrar Prestamo</PageTitle>
 
 <EditForm Model="prestamo" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator/>
+    <DataAnnotationsValidator />
 
     <div class="card-header text-center">
-        <h5 class="card-header">Registrar prestamo</h5>
+        <h3 class="card-header fw-bold">Registrar prestamo</h3>
     </div>
 
     <div class="card-body">
@@ -17,14 +20,20 @@
         @*PrestamoId*@
         <div class="mb-3">
             <label for="prestamId" class="form-label">PrestamoId:</label>
-             <InputNumber @bind-Value="prestamo.PrestamoId"/>
+            <InputNumber @bind-Value="prestamo.PrestamoId" readonly />
         </div>
 
         @*Deudor*@
         <div class="mb-3">
-            <label for="Deudor" class="form-label">Deudor:</label>
-            <InputText @bind-Value="prestamo.Deudor" class="form-control" />
-            <ValidationMessage For="@(() => prestamo.Deudor)"/>
+            <label>Deudor:</label>
+            <select @bind="prestamo.DeudorId" class="form-control">
+                <option value="0">Seleccione un deudor</option>
+                @foreach (var deudor in deudores)
+                {
+                    <option value="@deudor.DeudorId">@deudor.Nombres</option>
+                }
+            </select>
+            <ValidationMessage For="@(() => prestamo.DeudorId)" />
         </div>
 
         @*Concepto*@
@@ -40,12 +49,20 @@
             <InputNumber @bind-Value="prestamo.Monto" class="form-control" />
             <ValidationMessage For="@(() => prestamo.Monto)" />
         </div>
+
+        @*Balance*@
+        <div class="mb-3">
+            <label for="Balance" class="form-label">Balance:</label>
+            <InputNumber @bind-Value="prestamo.Balance" class="form-control" />
+            <ValidationMessage For="@(() => prestamo.Balance)" />
+        </div>
     </div>
 
     <div class="card-footer text-center">
         <div class="btn-group">
-            <button type="submit" class="btn btn-primary"<span class="bi bi-floppy mt-3"></span>Guardar</button>
-            <a href="/Prestamo/Index" class="btn btn-primary" type="button"><span class="bi bi-arrow-left mt-3"></span> Volver
+            <button type="submit" class="btn btn-primary"  <span class="bi bi-floppy mt-3"></span>Guardar</button>
+            <a href="/Prestamo/Index" class="btn btn-primary" type="button" style="margin-left: 10px;">
+                <span class="bi bi-arrow-left mt-3"></span> Volver
             </a>
         </div>
     </div>
@@ -64,8 +81,14 @@
     [Parameter]
     public int PrestamoId { get; set; }
     public Prestamos? prestamo { get; set; } = new Prestamos();
+    public List<Deudores> deudores { get; set; } = new List<Deudores>();
     private bool Validacion;
     private bool existe = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        deudores = await _contexto.Deudores.ToListAsync();
+    }
 
     public async Task Nuevo()
     {
@@ -85,14 +108,14 @@
             Nuevo();
         }
     }
-    public async Task <bool> Validar()
+    public async Task<bool> Validar()
     {
         existe = await prestamoService.Existe(prestamo.PrestamoId);
         return !existe;
-    } 
+    }
     public async Task Guardar()
     {
-        if (! await Validar())
+        if (!await Validar())
         {
             return;
         }
@@ -102,6 +125,9 @@
             Nuevo();
             Validacion = true;
         }
+        else
+        {
+            Validacion = false;
+        }
     }
-
 }

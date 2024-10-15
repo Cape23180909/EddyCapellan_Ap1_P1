@@ -1,55 +1,53 @@
-﻿@page "/Prestamo/Index"
+﻿@page "/Cobro/Index"
 @rendermode InteractiveServer
-@inject PrestamoService prestamoService
+@inject CobroService cobroService
 @inject NavigationManager navigationManager
 
-<PageTitle>Consulta Prestamos</PageTitle>
+<PageTitle>Consulta Cobros</PageTitle>
+
 <div class="container">
     <div class="card shadow-lg">
         <div class="card-header text-center">
-            <h3 class="card-header fw-bold">Consulta de prestamos</h3>
+            <h3 class="card-header fw-bold">Consulta de cobros</h3>
         </div>
 
         <div class="card-body">
             <div class="col-md-15 text-end">
-                <a href="/Prestamo/Create" class="btn btn-primary" type="button">
-
+                <a href="/Cobro/Create" class="btn btn-primary" type="button">
                     <span class="bi bi-plus-square mt-3"></span> Crear
                 </a>
 
                 <table class="table table-light table-bordered">
                     <thead class="table table-striped text-center ">
                         <tr>
-                            <th>PrestamoId</th>
+                            <th>CobroId</th>
+                            <th>Fecha</th>
                             <th>Deudor</th>
-                            <th>Concepto</th>
                             <th>Monto</th>
-                            <th>Balance</th>
                             <th>Ver</th>
                             <th>Editar</th>
                             <th>Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var prestamo in listaprestamo)
+                        @foreach (var cobro in listacobro)
                         {
                             <tr>
-                                <td class="text-center">@prestamo.PrestamoId</td>
-                                <td class="text-center">@prestamo.Deudor?.Nombres</td>
-                                <td class="text-center">@prestamo.Concepto</td>
-                                <td class="text-center">@prestamo.Monto</td>
-                                <td class="text-center">@prestamo.Balance</td>
+                                <td class="text-center">@cobro.CobroId</td>
+                                <td class="text-center">@(cobro?.Fecha.HasValue == true? cobro.Fecha.Value.ToString("dd/MM/yy") : "")</td>
+                                <td class="text-center">@cobro.Deudor.Nombres</td>
+                                <td class="text-center">@cobro.Monto</td>
 
                                 <td class="text-center">
-                                    <a href="/Prestamo/Details/@prestamo.PrestamoId" class="btn bi bi-eye"></a>
+                                    <a href="/Cobro/Details/@cobro.CobroId" class="btn bi bi-eye"></a>
                                 </td>
 
                                 <td class="text-center">
-                                    <a href="/Prestamo/Edit/@prestamo.PrestamoId" class="btn bi bi-pencil-square"></a>
+                                    <a href="/Cobro/Edit/@cobro.CobroId" class="btn bi bi-pencil-square"></a>
                                 </td>
 
                                 <td class="text-center">
-                                    <a href="/Prestamo/Delete/@prestamo.PrestamoId" class="btn bi bi-trash"></a>
+                                    <a href="/Cobro/Delete/@cobro.CobroId" class="btn bi bi-trash"></a>
                                 </td>
                             </tr>
                         }
@@ -57,20 +55,18 @@
                 </table>
             </div>
         </div>
-
     </div>
 </div>
 <div class="card-footer">
-    <p>Total de prestamos: @listaprestamo.Count</p>
+    <p>Total de prestamos: @listacobro.Count</p>
 </div>
 
 @code {
-    public Prestamos prestamo = new Prestamos();
-    public List<Prestamos> listaprestamo = new List<Prestamos>();
+    public Cobros cobro = new Cobros();
+    public List<Cobros> listacobro = new List<Cobros>();
 
     protected override async Task OnInitializedAsync()
     {
-        listaprestamo = await prestamoService.Listar(p => true);
+        listacobro = await cobroService.listar(p => true);
     }
-
 }

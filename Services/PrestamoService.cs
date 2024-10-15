@@ -25,41 +25,51 @@ public class PrestamoService
         return await _contexto.SaveChangesAsync() > 0;
     }
     //Metodo Modificar 
-    private async Task <bool> Modificar (Prestamos prestamo)
+    private async Task<bool> Modificar(Prestamos prestamo)
     {
         _contexto.Prestamos.Update(prestamo);
-        var modificado = await _contexto.SaveChangesAsync() >0;
+        var modificado = await _contexto.SaveChangesAsync() > 0;
         return modificado;
     }
     //Metod Guardar 
-    public async Task <bool> Guardar (Prestamos prestamo)
+    public async Task<bool> Guardar(Prestamos prestamo)
     {
-        if (! await Existe(prestamo.PrestamoId))
+        prestamo.Balance = prestamo.Monto;
+        if (!await Existe(prestamo.PrestamoId))
             return await Insertar(prestamo);
-        else 
+        else
             return await Modificar(prestamo);
     }
     //Metodo Eliminar
-    public async Task <bool> Eliminar (int id)
+    public async Task<bool> Eliminar(int id)
     {
         var eliminado = await _contexto.Prestamos
-            .Where(p =>p.PrestamoId == id)
+            .Where(p => p.PrestamoId == id)
             .ExecuteDeleteAsync();
         return eliminado > 0;
     }
     //Metodo Buscar 
-    public async Task <Prestamos?> Buscar (int id)
+    public async Task<Prestamos?> Buscar(int id)
     {
         return await _contexto.Prestamos
             .AsNoTracking()
-            .FirstOrDefaultAsync( p => p.PrestamoId == id);
+            .Include(p => p.Deudor)
+            .FirstOrDefaultAsync(p => p.PrestamoId == id);
     }
     //Metodo Listar 
-    public async Task <List<Prestamos>> Listar (Expression<Func<Prestamos, bool>> criterio)
+    public async Task<List<Prestamos>> Listar(Expression<Func<Prestamos, bool>> criterio)
     {
         return await _contexto.Prestamos
             .AsNoTracking()
+            .Include(p => p.Deudor)
             .Where(criterio)
+            .ToListAsync();
+    }
+    //Metodo ListaDeudores que me dice todos los deudores que tengo en modelcreate
+    public async Task<List<Deudores>> ListarDeudores()
+    {
+        return await _contexto.Deudores
+            .AsNoTracking()
             .ToListAsync();
     }
 }
