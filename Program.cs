@@ -1,3 +1,4 @@
+using EddyCapellan_Ap1_P1;
 using EddyCapellan_Ap1_P1.Components;
 using EddyCapellan_Ap1_P1.DAL;
 using EddyCapellan_Ap1_P1.Services;
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<Contexto>(Options => Options.UseSqlite(ConStr));
 
 builder.Services.AddScoped<PrestamoService>();
 builder.Services.AddScoped<CobroService>();
+builder.Services.AddScoped<DeudoreService>();
 
 var app = builder.Build();
 

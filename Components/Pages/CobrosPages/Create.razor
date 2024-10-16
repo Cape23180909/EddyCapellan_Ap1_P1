@@ -10,13 +10,14 @@
 
     <div class="container mt-4">
         <div class="card shadow-lg">
-            <div class="card-header">
+            <div class="card-header text-center">
                 <h3 class="mb-0 fw-bold">Registrar Cobro</h3>
             </div>
 
             <div class="card-body">
-                <div class="col-sm-3">
-                    <label for="CobroId" class="col-form-label">Cobro Id:</label>
+                @* Cobro Id *@
+                <div class="mb-3">
+                    <label for="CobroId" class="col-form-label"><strong>Cobro Id:</strong></label>
                     <div class="input-group">
                         <InputNumber @bind-Value="cobro.CobroId" class="form-control" />
                         <button class="btn btn-outline-primary" type="button">
@@ -25,65 +26,46 @@
                     </div>
                 </div>
 
-                <div class="col-sm-16">
-                    <label for="Fecha" class="col-form-label">Fecha:</label>
+                @* Fecha *@
+                <div class="mb-3">
+                    <label for="Fecha" class="col-form-label"><strong>Fecha:</strong></label>
                     <InputDate @bind-Value="cobro.Fecha" class="form-control" />
                     <ValidationMessage For="@(() => cobro.Fecha)" />
                 </div>
 
-                <div class="mb-3 row">
-                    <div class="col-sm-16">
-                        <label for="Deudor" class="col-sm-4 col-form-label">Deudor:</label>
-                        <select @onchange="OnDeudorSelected" class="form-select">
-                            <option value="0">Seleccione un deudor</option>
-                            @foreach (var deudor in listadeudor)
-                            {
-                                <option value="@deudor.DeudorId">@deudor.Nombres</option>
-                            }
-                        </select>
-                        <ValidationMessage For="@(() => cobro.DeudorId)" />
-                    </div>
+                @* Deudor *@
+                <div class="mb-3">
+                    <label for="Deudor" class="col-form-label"><strong>Deudor:</strong></label>
+                    <select @onchange="OnDeudorSelected" class="form-select">
+                        <option value="0">Seleccione un deudor</option>
+                        @foreach (var deudor in listadeudor)
+                        {
+                            <option value="@deudor.DeudorId">@deudor.Nombres</option>
+                        }
+                    </select>
+                    <ValidationMessage For="@(() => cobro.DeudorId)" />
                 </div>
 
-                <div class="col-sm-16">
-                    <label for="Monto" class="col-form-label">Monto:</label>
+                @* Monto *@
+                <div class="mb-3">
+                    <label for="Monto" class="col-form-label"><strong>Monto:</strong></label>
                     <InputNumber @bind-Value="cobro.Monto" class="form-control" />
                     <ValidationMessage For="@(() => cobro.Monto)" />
                 </div>
             </div>
-        </div>
 
-        <div class="card shadow-lg mt-4 border-success">
-            <div class="card-header">
-                <h3 class="mb-0 fw-bold">Cobro Detalle</h3>
-            </div>
-
-            <div class="card-body">
-                <div class="mb-3 row">
-                    <label for="DetalleId" class="col-sm-1 col-form-label">Detalle Id:</label>
-                    <div class="col-sm-3">
-                        <InputNumber @bind-Value="cobrodetalle.DetalleId" class="form-control" readonly />
-                    </div>
-
-                    <label for="CobroId" class="col-sm-1 col-form-label">Cobro Id:</label>
-                    <div class="col-sm-3">
-                        <InputNumber @bind-Value="cobro.CobroId" class="form-control" readonly />
-                    </div>
-
-                    <div class="col-sm-2">
-                        <button type="button" class="btn btn-primary" @onclick="AgregarDetalle">
-                            <span class="bi bi-plus"></span> Agregar
-                        </button>
-                    </div>
-
+            @* Detalles del Cobro *@
+            <div class="card mt-4 border-success">
+                <div class="card-header">
+                    <h3 class="mb-0 fw-bold">Cobro Detalle</h3>
                 </div>
 
-                <div class="mb-2 row">
-                    <div class="mb-4 row">
-                        <label for="PrestamoId" class="col-sm-1 col-form-label">Pr&eacute;stamo:</label>
-                        <div class="col-sm-4">
-                            <select @bind="selectedPrestamoId" class="form-control">
-                                <option value="">Seleccione un pr&eacute;stamo</option>
+                <div class="card-body p-0">
+                    <div class="row align-items-center m-0">
+                        @* Selección de préstamo *@
+                        <div class="col-sm-6 p-0 text-center">
+                            <select @bind="selectedPrestamoId" class="form-select">
+                                <option value="">Seleccione un préstamo</option>
                                 @if (prestamosDisponibles != null && prestamosDisponibles.Any())
                                 {
                                     @foreach (var prestamo in prestamosDisponibles)
@@ -94,65 +76,73 @@
                             </select>
                             <ValidationMessage For="@(() => selectedPrestamoId)" />
                         </div>
-                    </div>
 
-                    <div class="mb-2 row">
-                        <label for="ValorCobrado" class="col-sm-1 col-form-label">Valor Cobrado:</label>
-                        <div class="col-sm-5">
-                            <InputNumber @bind-Value="cobrodetalle.ValorCobrado" class="form-control" />
+                        @* Campo de Valor Cobrado *@
+                        <div class="col-sm-4 p-0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Valor Cobrado:</span>
+                                </div>
+                                <InputNumber @bind-Value="cobrodetalle.ValorCobrado" class="form-control" />
+                            </div>
                             <ValidationMessage For="@(() => cobrodetalle.ValorCobrado)" />
                         </div>
-                    </div>
 
-                    <div class="table-responsive mt-3">
-                        <table class="table table-bordered text-center">
-                            <thead>
-                                <tr>
-                                    <th>DetalleId</th>
-                                    <th>CobroId</th>
-                                    <th>Pr&eacute;stamoId</th>
-                                    <th>ValorCobrado</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var detalle in listacobrodetalle)
-                                {
-                                    <tr>
-                                        <td>@detalle.DetalleId</td>
-                                        <td>@detalle.CobroId</td>
-                                        <td>@detalle.PrestamoId</td>
-                                        <td>@detalle.ValorCobrado</td>
-                                        <td>
-                                            <button class="btn btn-outline-dark" @onclick="() => EliminarDetalle(detalle)">
-                                                <span class="bi bi-trash"></span> Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="card-footer text-center">
-                    <button type="button" class="btn btn-outline-primary" @onclick="Nuevo">
-                        <span class="bi bi-plus"></span> Nuevo
-                    </button>
-                    <button type="submit" class="btn btn-outline-success">
-                        <span class="bi bi-floppy"></span> Guardar
-                    </button>
-                    <a href="/Cobro/Index" class="btn btn-outline-primary">
-                        <span class="bi bi-arrow-left mt-3"></span> Volver
-                    </a>
-
-                    @if (guardo)
-                    {
-                        <div class="alert alert-success" role="alert">
-                            El cobro se ha guardado con éxito. Dele al botón volver para retornar a la consulta.
+                        @* Botón para agregar detalle *@
+                        <div class="col-sm-2 p-0">
+                            <button type="button" class="btn btn-primary" @onclick="AgregarDetalle">
+                                <span class="bi bi-plus"></span> Agregar
+                            </button>
                         </div>
-                    }
+                    </div>
                 </div>
+
+                @* Tabla de Detalles *@
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>Préstamo</th>
+                                <th>Valor Cobrado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detalle in listacobrodetalle)
+                            {
+                                <tr>
+                                    <td>@detalle.PrestamoId</td>
+                                    <td>@detalle.ValorCobrado</td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-dark" @onclick="() => EliminarDetalle(detalle)">
+                                            <span class="bi bi-trash"></span> Remover
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @* Footer *@
+            <div class="card-footer text-center">
+                <button type="button" class="btn btn-outline-primary" @onclick="Nuevo">
+                    <span class="bi bi-plus"></span> Nuevo
+                </button>
+                <button type="submit" class="btn btn-outline-success">
+                    <span class="bi bi-floppy"></span> Guardar
+                </button>
+                <a href="/Cobro/Index" class="btn btn-outline-primary">
+                    <span class="bi bi-arrow-left mt-3"></span> Volver
+                </a>
+
+                @if (guardo)
+                {
+                    <div class="alert alert-success mt-2" role="alert">
+                        El cobro se ha guardado con éxito. Dele al botón volver para retornar a la consulta.
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -185,7 +175,7 @@
         if (selectedDeudorId > 0)
         {
             // Llamar al nuevo método que devuelve una lista de préstamos
-            prestamosDisponibles = await cobroService.ObtenerPrestamosPorDeudorId(selectedDeudorId);
+            prestamosDisponibles = await cobroService.CargarPrestamosPorDeudorAsync(selectedDeudorId);
 
             // Asegúrate de manejar la lista de préstamos según tu lógica
             if (prestamosDisponibles != null && prestamosDisponibles.Any())

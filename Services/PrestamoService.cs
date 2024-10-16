@@ -1,6 +1,7 @@
 ﻿using EddyCapellan_Ap1_P1.DAL;
 using EddyCapellan_Ap1_P1.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace EddyCapellan_Ap1_P1.Services;
@@ -72,4 +73,25 @@ public class PrestamoService
             .AsNoTracking()
             .ToListAsync();
     }
+
+    public async Task<List<Prestamos>> ObtenerDeudoresConPrestamos()
+    {
+        // Suponiendo que tienes acceso a tu contexto de base de datos
+        return await _contexto.Prestamos.Include(p => p.Deudor).ToListAsync();
+    }
+
+    public async Task<List<Prestamos>> CargarPrestamosPorDeudorAsync(int deudorId)
+    {
+        return await _contexto.Prestamos.Where(p => p.DeudorId == deudorId).ToListAsync();
+    }
+
+    public async Task<List<Prestamos>> GetPrestamosPendientes(int deudorId)
+    {
+        return await _contexto.Prestamos
+            .Where(p => p.DeudorId == deudorId && p.Balance > 0)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
 }
