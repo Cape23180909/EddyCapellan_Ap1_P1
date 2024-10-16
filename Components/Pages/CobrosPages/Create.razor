@@ -65,7 +65,7 @@
                         @* Selección de préstamo *@
                         <div class="col-sm-6 p-0 text-center">
                             <select @bind="selectedPrestamoId" class="form-select">
-                                <option value="">Seleccione un préstamo</option>
+                                <option value="0">Seleccione un préstamo</option>
                                 @if (prestamosDisponibles != null && prestamosDisponibles.Any())
                                 {
                                     @foreach (var prestamo in prestamosDisponibles)
