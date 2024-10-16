@@ -10,7 +10,7 @@
 
     <div class="container mt-4">
         <div class="card shadow-lg">
-            <div class="card-header text-center">
+            <div class="card-header">
                 <h3 class="mb-0 fw-bold">Registrar Cobro</h3>
             </div>
 
@@ -143,14 +143,21 @@
                         El cobro se ha guardado con éxito. Dele al botón volver para retornar a la consulta.
                     </div>
                 }
+
+                @if (guardo)
+                {
+                    <div class="alert alert-danger mt-2" role="alert">
+                        Debe seleccionar un préstamo y llenar el valor cobrado.
+                    </div>
+                }
             </div>
         </div>
     </div>
 </EditForm>
 
 @code {
-    [Parameter]
-    public int CobroId { get; set; }
+        [Parameter]
+        public int CobroId { get; set; }
     public Cobros? cobro { get; set; } = new Cobros();
     public CobrosDetalle? cobrodetalle { get; set; } = new CobrosDetalle();
     public Prestamos? prestamo { get; set; } = new Prestamos();
@@ -161,6 +168,7 @@
     public List<Deudores> listadeudor { get; set; } = new List<Deudores>();
     private bool existe = false;
     private bool guardo;
+    private bool validacion;
 
     protected override async Task OnInitializedAsync()
     {
@@ -174,13 +182,10 @@
 
         if (selectedDeudorId > 0)
         {
-            // Llamar al nuevo método que devuelve una lista de préstamos
             prestamosDisponibles = await cobroService.CargarPrestamosPorDeudorAsync(selectedDeudorId);
 
-            // Asegúrate de manejar la lista de préstamos según tu lógica
             if (prestamosDisponibles != null && prestamosDisponibles.Any())
             {
-                // Aquí puedes ajustar el monto basado en el primer préstamo o aplicar otra lógica
                 cobro.Monto = prestamosDisponibles.FirstOrDefault()?.Monto ?? 0;
             }
         }
@@ -229,20 +234,45 @@
         listacobrodetalle.Remove(detalle);
     }
 
-    public async Task AgregarDetalle()
+    public void AgregarDetalle()
     {
-        listacobrodetalle.Add(new CobrosDetalle
+        validacion = false;
+
+        if (selectedPrestamoId <= 0)
+        {
+            validacion = true;
+            return;
+        }
+
+        if (cobrodetalle.ValorCobrado <= 0)
+        {
+            validacion = true;
+            return;
+        }
+
+        if (listacobrodetalle.Any(d => d.PrestamoId == selectedPrestamoId))
+        {
+            validacion = true;
+            return;
+        }
+
+        CobrosDetalle nuevoDetalle = new CobrosDetalle
             {
-                DetalleId = cobrodetalle.DetalleId,
-                CobroId = cobro.CobroId,
                 PrestamoId = selectedPrestamoId,
                 ValorCobrado = cobrodetalle.ValorCobrado
-            });
+            };
+
+        listacobrodetalle.Add(nuevoDetalle);
+
+
         cobrodetalle = new CobrosDetalle();
+        selectedPrestamoId = 0;
     }
+
 
     public async Task Volver()
     {
         navigationManager.NavigateTo("/Cobro/Index");
     }
+
 }
