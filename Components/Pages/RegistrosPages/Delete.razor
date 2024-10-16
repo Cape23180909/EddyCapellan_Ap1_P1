@@ -6,49 +6,38 @@
 
 <div class="container">
     <div class="row mb-3">
-        <div class="card-header text-center">
-            <h3 class="card-header fw-bold">Eliminar prestamo</h3>
-        </div>
-        <div class="card-header text-center">
-            <h5 class="card-header">¿Est&aacute;s seguro de que quieres eliminar este prestamo?</h5>
-        </div>
-        <div class="container">
-            <div class="card-header">
-                <div class="col md-6">
-                    <div class="card-body">
-                        <div class="card-header text-center">
-                            <h5 class="card-header">Datos del prestamo:</h5>
-                        </div>
-                        <ul class="list-unstyled">
-                            <li class="text-center">PrestamoId:<strong>@prestamo.PrestamoId</strong></li>
-                            <li class="text-center">Deudor:<strong>@prestamo.Deudor?.Nombres</strong></li>
-                            <li class="text-center">Concepto:<strong>@prestamo.Concepto</strong></li>
-                            <li class="text-center">Monto:<strong>@prestamo.Monto</strong></li>
-                        </ul>
-
-                    </div>
-                    <div class="card-body text-center">
-                        <a @onclick="EliminarPrestamo" class="btn btn-primary"><span class="bi bi-trash"></span>Eliminar</a>
-                        <a href="/Prestamo/Index" class="btn btn-primary"><span class="bi bi-arrow-left mt-3"></span>Volver</a>
-                    </div>
-                </div>
-
+        <div class="card">
+            <div class="card-header text-center">
+                <h3 class="card-title fw-bold">Detalles del préstamo</h3>
             </div>
-
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li>PrestamoId: <strong>@prestamo.PrestamoId</strong></li>
+                    <li>Deudor: <strong>@prestamo.Deudor?.Nombres</strong></li>
+                    <li>Concepto: <strong>@prestamo.Concepto</strong></li>
+                    <li>Monto: <strong>@prestamo.Monto</strong></li>
+                    <li>Balance: <strong>@prestamo.Balance</strong></li>
+                </ul>
+                <div class="card-body text-center">
+                    <a @onclick="EliminarPrestamo" class="btn btn-primary"><span class="bi bi-trash"></span>Eliminar</a>
+                    <a href="/Prestamo/Index" class="btn btn-primary"><span class="bi bi-arrow-left mt-3"></span>Volver</a>
+                </div>
+                <div class="text-center">
+                    <a href="/Prestamo/Index" class="btn btn-primary">
+                        <span class="bi bi-arrow-left mt-3"></span> Volver
+                    </a>
+                </div>
+            </div>
         </div>
-
     </div>
-
-    @if (Validacion)
-    {
-        <div class="alert alert-danger text-center" role="alert">
-            El Prestamo se a Eliminado con exito.
-            Dele al boton volver para retornar a la consulta.
-        </div>
-    }
-
 </div>
-
+@if (Validacion)
+{
+    <div class="alert alert-danger text-center" role="alert">
+        El Prestamo se a Eliminado con exito.
+        Dele al boton volver para retornar a la consulta.
+    </div>
+}
 
 @code {
     [Parameter]

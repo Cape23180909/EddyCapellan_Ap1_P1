@@ -17,7 +17,30 @@ namespace EddyCapellan_Ap1_P1.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
-            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.CobroDetalle", b =>
+            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Cobros", b =>
+                {
+                    b.Property<int>("CobroId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DeudorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("Fecha")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Monto")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CobroId");
+
+                    b.HasIndex("DeudorId");
+
+                    b.ToTable("Cobros");
+                });
+
+            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.CobrosDetalle", b =>
                 {
                     b.Property<int>("DetalleId")
                         .ValueGeneratedOnAdd()
@@ -41,28 +64,6 @@ namespace EddyCapellan_Ap1_P1.Migrations
                     b.ToTable("CobroDetalle");
                 });
 
-            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Cobros", b =>
-                {
-                    b.Property<int>("CobroId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DeudorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Monto")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("CobroId");
-
-                    b.HasIndex("DeudorId");
-
-                    b.ToTable("Cobros");
-                });
-
             modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Deudores", b =>
                 {
                     b.Property<int>("DeudorId")
@@ -73,12 +74,7 @@ namespace EddyCapellan_Ap1_P1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("PrestamoId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("DeudorId");
-
-                    b.HasIndex("PrestamoId");
 
                     b.ToTable("Deudores");
 
@@ -128,7 +124,18 @@ namespace EddyCapellan_Ap1_P1.Migrations
                     b.ToTable("Prestamos");
                 });
 
-            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.CobroDetalle", b =>
+            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Cobros", b =>
+                {
+                    b.HasOne("EddyCapellan_Ap1_P1.Models.Deudores", "Deudor")
+                        .WithMany()
+                        .HasForeignKey("DeudorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deudor");
+                });
+
+            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.CobrosDetalle", b =>
                 {
                     b.HasOne("EddyCapellan_Ap1_P1.Models.Cobros", "Cobro")
                         .WithMany("CobroDetalles")
@@ -147,28 +154,10 @@ namespace EddyCapellan_Ap1_P1.Migrations
                     b.Navigation("Prestamo");
                 });
 
-            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Cobros", b =>
-                {
-                    b.HasOne("EddyCapellan_Ap1_P1.Models.Deudores", "Deudor")
-                        .WithMany()
-                        .HasForeignKey("DeudorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Deudor");
-                });
-
-            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Deudores", b =>
-                {
-                    b.HasOne("EddyCapellan_Ap1_P1.Models.Prestamos", null)
-                        .WithMany("Deudores")
-                        .HasForeignKey("PrestamoId");
-                });
-
             modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Prestamos", b =>
                 {
                     b.HasOne("EddyCapellan_Ap1_P1.Models.Deudores", "Deudor")
-                        .WithMany()
+                        .WithMany("Prestamos")
                         .HasForeignKey("DeudorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -181,9 +170,9 @@ namespace EddyCapellan_Ap1_P1.Migrations
                     b.Navigation("CobroDetalles");
                 });
 
-            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Prestamos", b =>
+            modelBuilder.Entity("EddyCapellan_Ap1_P1.Models.Deudores", b =>
                 {
-                    b.Navigation("Deudores");
+                    b.Navigation("Prestamos");
                 });
 #pragma warning restore 612, 618
         }

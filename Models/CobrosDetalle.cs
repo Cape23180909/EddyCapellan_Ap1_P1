@@ -7,13 +7,16 @@ public class CobrosDetalle
 {
     [Key]
     public int DetalleId { get; set; }
+
     [Required(ErrorMessage = "Favor seleccionar un cobro.")]
     public int CobroId { get; set; }
+
     [ForeignKey("CobroId")]
     public Cobros Cobro { get; set; }
 
     [Required(ErrorMessage = "Favor seleccionar un préstamo.")]
     public int PrestamoId { get; set; }
+
     [ForeignKey("PrestamoId")]
     public Prestamos Prestamo { get; set; }
 

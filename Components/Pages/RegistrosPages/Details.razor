@@ -9,34 +9,26 @@
 {
     <div class="container">
         <div class="row mb-3">
-            <div class="card-header text-center">
-                <h3 class="card-header fw-bold">Detalles del prestamo</h3>
-            </div>
-            <div class="container">
-                <div class="card-header">
-                    <div class="col md-6">
-                        <div class="card-body">
-                            <ul class="list-unstyled">
-                                <li>PrestamoId:<strong>@prestamo.PrestamoId</strong></li>
-                                <li>Deudor:<strong>@prestamo.Deudor?.Nombres</strong></li>
-                                <li>Concepto:<strong>@prestamo.Concepto</strong></li>
-                                <li>Monto:<strong>@prestamo.Monto</strong></li>
-                                <li>Balance:<strong>@prestamo.Balance</strong></li>
-
-                            </ul>
-
-                        </div>
-                        <div>
-                            <a href="/Prestamo/Index" class="btn btn-primary"><span class="bi bi-arrow-left mt-3"></span>Volver</a>
-                        </div>
-                    </div>
-
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3 class="card-title fw-bold">Detalles del préstamo</h3>
                 </div>
-
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li>PrestamoId: <strong>@prestamo.PrestamoId</strong></li>
+                        <li>Deudor: <strong>@prestamo.Deudor?.Nombres</strong></li>
+                        <li>Concepto: <strong>@prestamo.Concepto</strong></li>
+                        <li>Monto: <strong>@prestamo.Monto</strong></li>
+                        <li>Balance: <strong>@prestamo.Balance</strong></li>
+                    </ul>
+                    <div class="text-center">
+                        <a href="/Prestamo/Index" class="btn btn-primary">
+                            <span class="bi bi-arrow-left mt-3"></span> Volver
+                        </a>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </div>
 }
 
@@ -49,5 +41,4 @@
     {
         prestamo = await prestamoService.Buscar(PrestamoId);
     }
-
 }

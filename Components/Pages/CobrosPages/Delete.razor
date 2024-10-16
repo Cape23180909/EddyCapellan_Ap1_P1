@@ -126,7 +126,6 @@
     protected override async Task OnInitializedAsync()
     {
         cobro = await cobroService.Buscar(CobroId);
-        listadeudor = await cobroService.ListarDeudores();
 
         listacobrodetalle = cobro.CobroDetalles.ToList();
     }
